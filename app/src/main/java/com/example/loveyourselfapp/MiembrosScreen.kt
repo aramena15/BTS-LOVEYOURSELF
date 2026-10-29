@@ -199,7 +199,7 @@ fun MiembrosScreen(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            MiembrosNavItem(
+            BTSNavItem(
                 icon = Icons.Default.Home,
                 text = "Home",
                 selected = false,
@@ -208,7 +208,7 @@ fun MiembrosScreen(
                 }
             )
 
-            MiembrosNavItem(
+            BTSNavItem(
                 icon = Icons.Default.LibraryMusic,
                 text = "Music",
                 selected = false,
@@ -217,7 +217,7 @@ fun MiembrosScreen(
                 }
             )
 
-            MiembrosNavItem(
+            BTSNavItem(
                 icon = Icons.Default.Person,
                 text = "Profile",
                 selected = false,
@@ -306,36 +306,5 @@ private fun MiembroMusicCard(
                 )
             }
         }
-    }
-}
-
-@Composable
-private fun MiembrosNavItem(
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
-    text: String,
-    selected: Boolean,
-    onClick: () -> Unit
-) {
-    Column(
-        modifier = Modifier
-            .clickable(onClick = onClick)
-            .padding(horizontal = 10.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = text,
-            tint = if (selected) MembersPink else MembersMuted,
-            modifier = Modifier.size(20.dp)
-        )
-
-        Spacer(modifier = Modifier.height(3.dp))
-
-        Text(
-            text = text,
-            fontFamily = BTSBodyFont,
-            fontSize = 8.sp,
-            color = if (selected) MembersPink else MembersMuted
-        )
     }
 }

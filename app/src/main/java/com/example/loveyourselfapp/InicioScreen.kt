@@ -431,34 +431,3 @@ fun InicioScreen(
         }
     }
 }
-
-@Composable
-private fun InicioNavItem(
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
-    text: String,
-    selected: Boolean,
-    onClick: () -> Unit
-) {
-    Column(
-        modifier = Modifier
-            .clickable(onClick = onClick)
-            .padding(horizontal = 10.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = text,
-            tint = if (selected) PinkLight else TextMuted,
-            modifier = Modifier.size(20.dp)
-        )
-
-        Spacer(modifier = Modifier.height(3.dp))
-
-        Text(
-            text = text,
-            fontFamily = BTSBodyFont,
-            fontSize = 8.sp,
-            color = if (selected) PinkLight else TextMuted
-        )
-    }
-}
