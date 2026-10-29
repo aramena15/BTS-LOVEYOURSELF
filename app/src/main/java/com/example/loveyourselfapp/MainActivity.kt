@@ -1,6 +1,6 @@
+
 package com.example.loveyourselfapp
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -18,7 +18,6 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             LoveYourselfAppTheme {
-
                 var ruta by remember {
                     mutableStateOf<AppRoute>(AppRoute.Inicio)
                 }
@@ -28,32 +27,10 @@ class MainActivity : ComponentActivity() {
                 }
 
                 when (ruta) {
-
                     AppRoute.Inicio -> {
                         InicioScreen(
                             onNavigate = { nuevaRuta ->
-                                when (nuevaRuta) {
-                                    AppRoute.Perfil -> {
-                                        val intent = Intent(
-                                            this@MainActivity,
-                                            PerfilActivity::class.java
-                                        )
-                                        intent.putExtra("puntuacion", puntuacion)
-                                        startActivity(intent)
-                                    }
-
-                                    AppRoute.Discografia -> {
-                                        val intent = Intent(
-                                            this@MainActivity,
-                                            DiscografiaActivity::class.java
-                                        )
-                                        startActivity(intent)
-                                    }
-
-                                    else -> {
-                                        ruta = nuevaRuta
-                                    }
-                                }
+                                ruta = nuevaRuta
                             }
                         )
                     }
@@ -61,28 +38,15 @@ class MainActivity : ComponentActivity() {
                     AppRoute.Miembros -> {
                         MiembrosScreen(
                             onNavigate = { nuevaRuta ->
-                                when (nuevaRuta) {
-                                    AppRoute.Perfil -> {
-                                        val intent = Intent(
-                                            this@MainActivity,
-                                            PerfilActivity::class.java
-                                        )
-                                        intent.putExtra("puntuacion", puntuacion)
-                                        startActivity(intent)
-                                    }
+                                ruta = nuevaRuta
+                            }
+                        )
+                    }
 
-                                    AppRoute.Discografia -> {
-                                        val intent = Intent(
-                                            this@MainActivity,
-                                            DiscografiaActivity::class.java
-                                        )
-                                        startActivity(intent)
-                                    }
-
-                                    else -> {
-                                        ruta = nuevaRuta
-                                    }
-                                }
+                    AppRoute.Discografia -> {
+                        DiscografiaScreen(
+                            onNavigate = { nuevaRuta ->
+                                ruta = nuevaRuta
                             }
                         )
                     }
@@ -90,41 +54,19 @@ class MainActivity : ComponentActivity() {
                     AppRoute.Quiz -> {
                         QuizScreen(
                             onNavigate = { nuevaRuta ->
-                                when (nuevaRuta) {
-                                    AppRoute.Perfil -> {
-                                        val intent = Intent(
-                                            this@MainActivity,
-                                            PerfilActivity::class.java
-                                        )
-                                        intent.putExtra("puntuacion", puntuacion)
-                                        startActivity(intent)
-                                    }
-
-                                    AppRoute.Discografia -> {
-                                        val intent = Intent(
-                                            this@MainActivity,
-                                            DiscografiaActivity::class.java
-                                        )
-                                        startActivity(intent)
-                                    }
-
-                                    else -> {
-                                        ruta = nuevaRuta
-                                    }
-                                }
+                                ruta = nuevaRuta
                             },
-                            onScoreChange = {
-                                puntuacion = it
-                            }
+                            onScoreChange = { puntuacion = it }
                         )
                     }
 
-                    AppRoute.Discografia -> {
-                        ruta = AppRoute.Inicio
-                    }
-
                     AppRoute.Perfil -> {
-                        ruta = AppRoute.Inicio
+                        PerfilScreen(
+                            puntuacion = puntuacion,
+                            onNavigate = { nuevaRuta ->
+                                ruta = nuevaRuta
+                            }
+                        )
                     }
                 }
             }

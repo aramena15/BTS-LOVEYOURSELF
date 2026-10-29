@@ -1,3 +1,4 @@
+
 package com.example.loveyourselfapp
 
 import androidx.compose.foundation.background
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Groups
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LibraryMusic
 import androidx.compose.material.icons.filled.Person
@@ -75,32 +77,17 @@ fun QuizScreen(
             ),
             Pregunta(
                 pregunta = "¿Quién es el líder de BTS?",
-                opciones = listOf(
-                    "Jin",
-                    "SUGA",
-                    "RM",
-                    "j-hope"
-                ),
+                opciones = listOf("Jin", "SUGA", "RM", "j-hope"),
                 respuestaCorrecta = "RM"
             ),
             Pregunta(
                 pregunta = "¿Cuántos integrantes tiene BTS?",
-                opciones = listOf(
-                    "5",
-                    "6",
-                    "7",
-                    "8"
-                ),
+                opciones = listOf("5", "6", "7", "8"),
                 respuestaCorrecta = "7"
             ),
             Pregunta(
                 pregunta = "¿Cuál de estos álbumes pertenece a BTS?",
-                opciones = listOf(
-                    "Wings",
-                    "Divide",
-                    "Fine Line",
-                    "25"
-                ),
+                opciones = listOf("Wings", "Divide", "Fine Line", "25"),
                 respuestaCorrecta = "Wings"
             ),
             Pregunta(
@@ -116,20 +103,28 @@ fun QuizScreen(
         )
     }
 
-    var preguntaActual by remember {
-        mutableIntStateOf(0)
+    var preguntaActual by remember { mutableIntStateOf(0) }
+    var puntuacion by remember { mutableIntStateOf(0) }
+    var respuestaSeleccionada by remember { mutableStateOf<String?>(null) }
+    var quizTerminado by remember { mutableStateOf(false) }
+
+    val progreso = if (quizTerminado) {
+        1f
+    } else {
+        (preguntaActual + 1).toFloat() / preguntas.size
     }
 
-    var puntuacion by remember {
-        mutableIntStateOf(0)
+    val mensajeResultado = when (puntuacion) {
+        5 -> "¡ARMY EXPERTA! 💜"
+        3, 4 -> "¡ARMY DE CORAZÓN! ✨"
+        else -> "¡ARMY EN DESCUBRIMIENTO! 🌷"
     }
 
-    var respuestaSeleccionada by remember {
-        mutableStateOf<String?>(null)
+    val descripcionResultado = when (puntuacion) {
+        5 -> "¡Borahae! Conoces a BTS increíblemente bien. Tu corazón ARMY brilla con luz propia."
+        3, 4 -> "¡Vas genial! Conoces muchos detalles de BTS. Sigue descubriendo más sobre tus siete estrellas."
+        else -> "¡Tu aventura apenas comienza! Sigue descubriendo y disfrutando de BTS. ¡Cada día puedes aprender algo nuevo!"
     }
-
-    val pregunta = preguntas[preguntaActual]
-    val progreso = (preguntaActual + 1).toFloat() / preguntas.size
 
     Column(
         modifier = Modifier
@@ -148,9 +143,7 @@ fun QuizScreen(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Column(
-                    modifier = Modifier.weight(1f)
-                ) {
+                Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = "BTS ARMY",
                         fontFamily = BTSTitleFont,
@@ -191,11 +184,9 @@ fun QuizScreen(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.Bottom
             ) {
-                Column(
-                    modifier = Modifier.weight(1f)
-                ) {
+                Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = "Test your",
+                        text = if (quizTerminado) "Your result" else "Test your",
                         fontFamily = BTSBodyFont,
                         fontSize = 11.sp,
                         fontWeight = FontWeight.Bold,
@@ -204,7 +195,7 @@ fun QuizScreen(
                     )
 
                     Text(
-                        text = "Knowledge.",
+                        text = if (quizTerminado) "ARMY Level." else "Knowledge.",
                         fontFamily = BTSTitleFont,
                         fontSize = 30.sp,
                         fontWeight = FontWeight.Bold,
@@ -213,7 +204,11 @@ fun QuizScreen(
                 }
 
                 Text(
-                    text = "${preguntaActual + 1}/${preguntas.size}",
+                    text = if (quizTerminado) {
+                        "${preguntas.size}/${preguntas.size}"
+                    } else {
+                        "${preguntaActual + 1}/${preguntas.size}"
+                    },
                     fontFamily = BTSTitleFont,
                     fontSize = 19.sp,
                     fontWeight = FontWeight.Bold,
@@ -241,161 +236,284 @@ fun QuizScreen(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(18.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = QuizPurpleCard
-                )
-            ) {
+            if (quizTerminado) {
                 Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(20.dp)
+                        .weight(1f)
+                        .fillMaxWidth(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(
-                        text = "QUESTION ${preguntaActual + 1}",
-                        fontFamily = BTSBodyFont,
-                        fontSize = 8.sp,
-                        fontWeight = FontWeight.Bold,
-                        letterSpacing = 1.6.sp,
-                        color = QuizPink
-                    )
-
-                    Spacer(modifier = Modifier.height(9.dp))
-
-                    Text(
-                        text = pregunta.pregunta,
-                        fontFamily = BTSTitleFont,
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = QuizWhite
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(14.dp))
-
-            Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(9.dp)
-            ) {
-                pregunta.opciones.forEachIndexed { index, opcion ->
-                    val seleccionada = respuestaSeleccionada == opcion
-
                     Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(52.dp)
-                            .clickable {
-                                respuestaSeleccionada = opcion
-                            },
-                        shape = RoundedCornerShape(13.dp),
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(24.dp),
                         colors = CardDefaults.cardColors(
-                            containerColor = if (seleccionada) {
-                                QuizPurpleLight
-                            } else {
-                                QuizPurpleCard
-                            }
+                            containerColor = QuizPurpleCard
                         )
                     ) {
-                        Row(
+                        Column(
                             modifier = Modifier
-                                .fillMaxSize()
-                                .padding(horizontal = 12.dp),
-                            verticalAlignment = Alignment.CenterVertically
+                                .fillMaxWidth()
+                                .padding(24.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Box(
                                 modifier = Modifier
-                                    .size(27.dp)
+                                    .size(66.dp)
                                     .clip(CircleShape)
-                                    .background(
-                                        if (seleccionada) {
-                                            QuizPink
-                                        } else {
-                                            QuizPurpleDark
-                                        }
-                                    ),
+                                    .background(QuizPurpleLight),
                                 contentAlignment = Alignment.Center
                             ) {
-                                Text(
-                                    text = ('A'.code + index).toChar().toString(),
-                                    fontFamily = BTSBodyFont,
-                                    fontSize = 9.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = if (seleccionada) {
-                                        QuizPurpleDark
-                                    } else {
-                                        QuizMuted
-                                    }
+                                Icon(
+                                    imageVector = Icons.Default.Psychology,
+                                    contentDescription = "Resultado del quiz",
+                                    tint = QuizPink,
+                                    modifier = Modifier.size(36.dp)
                                 )
                             }
 
-                            Spacer(modifier = Modifier.width(11.dp))
+                            Spacer(modifier = Modifier.height(18.dp))
 
                             Text(
-                                text = opcion,
+                                text = "¡QUIZ COMPLETADO!",
                                 fontFamily = BTSBodyFont,
                                 fontSize = 12.sp,
-                                fontWeight = if (seleccionada) {
-                                    FontWeight.Bold
-                                } else {
-                                    FontWeight.Normal
-                                },
-                                color = QuizWhite,
-                                modifier = Modifier.weight(1f)
+                                fontWeight = FontWeight.Bold,
+                                letterSpacing = 1.2.sp,
+                                color = QuizPink
                             )
 
-                            RadioButton(
-                                selected = seleccionada,
-                                onClick = {
-                                    respuestaSeleccionada = opcion
-                                }
+                            Spacer(modifier = Modifier.height(12.dp))
+
+                            Text(
+                                text = "$puntuacion / ${preguntas.size}",
+                                fontFamily = BTSTitleFont,
+                                fontSize = 42.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = QuizWhite
+                            )
+
+                            Text(
+                                text = "respuestas correctas",
+                                fontFamily = BTSBodyFont,
+                                fontSize = 13.sp,
+                                color = QuizMuted
+                            )
+
+                            Spacer(modifier = Modifier.height(20.dp))
+
+                            Text(
+                                text = mensajeResultado,
+                                fontFamily = BTSTitleFont,
+                                fontSize = 21.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = QuizPink
+                            )
+
+                            Spacer(modifier = Modifier.height(12.dp))
+
+                            Text(
+                                text = descripcionResultado,
+                                fontFamily = BTSBodyFont,
+                                fontSize = 14.sp,
+                                color = QuizWhite,
+                                lineHeight = 22.sp
+                            )
+
+                            Spacer(modifier = Modifier.height(20.dp))
+
+                            Text(
+                                text = "LOVE YOURSELF 💜",
+                                fontFamily = BTSTitleFont,
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Bold,
+                                letterSpacing = 1.5.sp,
+                                color = QuizPink
                             )
                         }
                     }
                 }
-            }
 
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Button(
-                onClick = {
-                    if (respuestaSeleccionada == pregunta.respuestaCorrecta) {
-                        puntuacion++
-                    }
-
-                    if (preguntaActual < preguntas.lastIndex) {
-                        preguntaActual++
-                        respuestaSeleccionada = null
-                    } else {
-                        onScoreChange(puntuacion)
+                Button(
+                    onClick = {
                         onNavigate(AppRoute.Perfil)
-                    }
-                },
-                enabled = respuestaSeleccionada != null,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(52.dp),
-                shape = RoundedCornerShape(14.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = QuizPink,
-                    contentColor = QuizPurpleDark,
-                    disabledContainerColor = QuizPurpleCard,
-                    disabledContentColor = QuizMuted
-                )
-            ) {
-                Text(
-                    text = if (preguntaActual == preguntas.lastIndex) {
-                        "SEE MY RESULT"
-                    } else {
-                        "NEXT QUESTION"
                     },
-                    fontFamily = BTSBodyFont,
-                    fontSize = 11.sp,
-                    fontWeight = FontWeight.Bold,
-                    letterSpacing = 1.sp
-                )
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(52.dp),
+                    shape = RoundedCornerShape(14.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = QuizPink,
+                        contentColor = QuizPurpleDark
+                    )
+                ) {
+                    Text(
+                        text = "VER MI PERFIL ⭐",
+                        fontFamily = BTSBodyFont,
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 1.sp
+                    )
+                }
+            } else {
+                val pregunta = preguntas[preguntaActual]
+
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(18.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = QuizPurpleCard
+                    )
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(20.dp)
+                    ) {
+                        Text(
+                            text = "QUESTION ${preguntaActual + 1}",
+                            fontFamily = BTSBodyFont,
+                            fontSize = 8.sp,
+                            fontWeight = FontWeight.Bold,
+                            letterSpacing = 1.6.sp,
+                            color = QuizPink
+                        )
+
+                        Spacer(modifier = Modifier.height(9.dp))
+
+                        Text(
+                            text = pregunta.pregunta,
+                            fontFamily = BTSTitleFont,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = QuizWhite
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(14.dp))
+
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(9.dp)
+                ) {
+                    pregunta.opciones.forEachIndexed { index, opcion ->
+                        val seleccionada = respuestaSeleccionada == opcion
+
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(52.dp)
+                                .clickable {
+                                    respuestaSeleccionada = opcion
+                                },
+                            shape = RoundedCornerShape(13.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor = if (seleccionada) {
+                                    QuizPurpleLight
+                                } else {
+                                    QuizPurpleCard
+                                }
+                            )
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(horizontal = 12.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Box(
+                                    modifier = Modifier
+                                        .size(27.dp)
+                                        .clip(CircleShape)
+                                        .background(
+                                            if (seleccionada) {
+                                                QuizPink
+                                            } else {
+                                                QuizPurpleDark
+                                            }
+                                        ),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(
+                                        text = ('A'.code + index).toChar().toString(),
+                                        fontFamily = BTSBodyFont,
+                                        fontSize = 9.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = if (seleccionada) {
+                                            QuizPurpleDark
+                                        } else {
+                                            QuizMuted
+                                        }
+                                    )
+                                }
+
+                                Spacer(modifier = Modifier.width(11.dp))
+
+                                Text(
+                                    text = opcion,
+                                    fontFamily = BTSBodyFont,
+                                    fontSize = 12.sp,
+                                    fontWeight = if (seleccionada) {
+                                        FontWeight.Bold
+                                    } else {
+                                        FontWeight.Normal
+                                    },
+                                    color = QuizWhite,
+                                    modifier = Modifier.weight(1f)
+                                )
+
+                                RadioButton(
+                                    selected = seleccionada,
+                                    onClick = {
+                                        respuestaSeleccionada = opcion
+                                    }
+                                )
+                            }
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Button(
+                    onClick = {
+                        if (respuestaSeleccionada == pregunta.respuestaCorrecta) {
+                            puntuacion++
+                        }
+
+                        if (preguntaActual < preguntas.lastIndex) {
+                            preguntaActual++
+                            respuestaSeleccionada = null
+                        } else {
+                            onScoreChange(puntuacion)
+                            quizTerminado = true
+                        }
+                    },
+                    enabled = respuestaSeleccionada != null,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(52.dp),
+                    shape = RoundedCornerShape(14.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = QuizPink,
+                        contentColor = QuizPurpleDark,
+                        disabledContainerColor = QuizPurpleCard,
+                        disabledContentColor = QuizMuted
+                    )
+                ) {
+                    Text(
+                        text = if (preguntaActual == preguntas.lastIndex) {
+                            "VER MI RESULTADO"
+                        } else {
+                            "NEXT QUESTION"
+                        },
+                        fontFamily = BTSBodyFont,
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 1.sp
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -406,35 +524,43 @@ fun QuizScreen(
                 .fillMaxWidth()
                 .height(68.dp)
                 .background(Color(0xFF1D072B))
-                .padding(horizontal = 22.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
+                .padding(horizontal = 8.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
             BTSNavItem(
                 icon = Icons.Default.Home,
                 text = "Home",
                 selected = false,
-                onClick = {
-                    onNavigate(AppRoute.Inicio)
-                }
+                onClick = { onNavigate(AppRoute.Inicio) }
+            )
+
+            BTSNavItem(
+                icon = Icons.Default.Groups,
+                text = "Artists",
+                selected = false,
+                onClick = { onNavigate(AppRoute.Miembros) }
             )
 
             BTSNavItem(
                 icon = Icons.Default.LibraryMusic,
                 text = "Music",
                 selected = false,
-                onClick = {
-                    onNavigate(AppRoute.Discografia)
-                }
+                onClick = { onNavigate(AppRoute.Discografia) }
+            )
+
+            BTSNavItem(
+                icon = Icons.Default.Psychology,
+                text = "Quiz",
+                selected = true,
+                onClick = { onNavigate(AppRoute.Quiz) }
             )
 
             BTSNavItem(
                 icon = Icons.Default.Person,
                 text = "Profile",
                 selected = false,
-                onClick = {
-                    onNavigate(AppRoute.Perfil)
-                }
+                onClick = { onNavigate(AppRoute.Perfil) }
             )
         }
     }

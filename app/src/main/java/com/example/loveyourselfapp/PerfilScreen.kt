@@ -21,6 +21,8 @@ import androidx.compose.material.icons.filled.LibraryMusic
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.Groups
+import androidx.compose.material.icons.filled.Psychology
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -392,8 +394,8 @@ fun PerfilScreen(
                 .fillMaxWidth()
                 .height(68.dp)
                 .background(Color(0xFF1D072B))
-                .padding(horizontal = 22.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
+                .padding(horizontal = 8.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
             BTSNavItem(
@@ -402,6 +404,15 @@ fun PerfilScreen(
                 selected = false,
                 onClick = {
                     onNavigate(AppRoute.Inicio)
+                }
+            )
+
+            BTSNavItem(
+                icon = Icons.Default.Groups,
+                text = "Artists",
+                selected = true,
+                onClick = {
+                    onNavigate(AppRoute.Miembros)
                 }
             )
 
@@ -415,9 +426,18 @@ fun PerfilScreen(
             )
 
             BTSNavItem(
+                icon = Icons.Default.Psychology,
+                text = "Quiz",
+                selected = false,
+                onClick = {
+                    onNavigate(AppRoute.Quiz)
+                }
+            )
+
+            BTSNavItem(
                 icon = Icons.Default.Person,
                 text = "Profile",
-                selected = true,
+                selected = false,
                 onClick = {
                     onNavigate(AppRoute.Perfil)
                 }

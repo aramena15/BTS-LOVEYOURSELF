@@ -24,6 +24,8 @@ import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LibraryMusic
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Groups
+import androidx.compose.material.icons.filled.Psychology
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -190,13 +192,14 @@ fun MiembrosScreen(
             }
         }
 
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(68.dp)
                 .background(Color(0xFF1D072B))
-                .padding(horizontal = 22.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
+                .padding(horizontal = 8.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
             BTSNavItem(
@@ -209,11 +212,29 @@ fun MiembrosScreen(
             )
 
             BTSNavItem(
+                icon = Icons.Default.Groups,
+                text = "Artists",
+                selected = true,
+                onClick = {
+                    onNavigate(AppRoute.Miembros)
+                }
+            )
+
+            BTSNavItem(
                 icon = Icons.Default.LibraryMusic,
                 text = "Music",
                 selected = false,
                 onClick = {
                     onNavigate(AppRoute.Discografia)
+                }
+            )
+
+            BTSNavItem(
+                icon = Icons.Default.Psychology,
+                text = "Quiz",
+                selected = false,
+                onClick = {
+                    onNavigate(AppRoute.Quiz)
                 }
             )
 
