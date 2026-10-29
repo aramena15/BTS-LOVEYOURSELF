@@ -402,7 +402,7 @@ fun InicioScreen(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            InicioNavItem(
+            BTSNavItem(
                 icon = Icons.Default.Home,
                 text = "Home",
                 selected = true,
@@ -411,7 +411,7 @@ fun InicioScreen(
                 }
             )
 
-            InicioNavItem(
+            BTSNavItem(
                 icon = Icons.Default.LibraryMusic,
                 text = "Music",
                 selected = false,
@@ -420,7 +420,7 @@ fun InicioScreen(
                 }
             )
 
-            InicioNavItem(
+            BTSNavItem(
                 icon = Icons.Default.Person,
                 text = "Profile",
                 selected = false,
