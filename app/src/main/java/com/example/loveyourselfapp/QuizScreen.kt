@@ -16,12 +16,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LibraryMusic
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Psychology
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -412,7 +410,7 @@ fun QuizScreen(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            QuizNavItem(
+            BTSNavItem(
                 icon = Icons.Default.Home,
                 text = "Home",
                 selected = false,
@@ -421,7 +419,7 @@ fun QuizScreen(
                 }
             )
 
-            QuizNavItem(
+            BTSNavItem(
                 icon = Icons.Default.LibraryMusic,
                 text = "Music",
                 selected = false,
@@ -430,7 +428,7 @@ fun QuizScreen(
                 }
             )
 
-            QuizNavItem(
+            BTSNavItem(
                 icon = Icons.Default.Person,
                 text = "Profile",
                 selected = false,
@@ -439,36 +437,5 @@ fun QuizScreen(
                 }
             )
         }
-    }
-}
-
-@Composable
-private fun QuizNavItem(
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
-    text: String,
-    selected: Boolean,
-    onClick: () -> Unit
-) {
-    Column(
-        modifier = Modifier
-            .clickable(onClick = onClick)
-            .padding(horizontal = 10.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = text,
-            tint = if (selected) QuizPink else QuizMuted,
-            modifier = Modifier.size(20.dp)
-        )
-
-        Spacer(modifier = Modifier.height(3.dp))
-
-        Text(
-            text = text,
-            fontFamily = BTSBodyFont,
-            fontSize = 8.sp,
-            color = if (selected) QuizPink else QuizMuted
-        )
     }
 }
